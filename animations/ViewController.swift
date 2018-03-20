@@ -10,16 +10,82 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var pass: UITextField!
+    @IBOutlet weak var heading: UILabel!
+    @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak var tip: UIView!
+    
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        loginBtn.center.y += 30
+        loginBtn.alpha = 0.0
+        
+        username.center.x -= view.bounds.width
+        pass.center.x -= view.bounds.width
+        heading.center.x -= view.bounds.width
+        
+        tip.isHidden = true
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        UIView.animate(withDuration: 0.5) {
+            self.heading.center.x += self.view.bounds.width
+        
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0.3, options: [.curveEaseInOut], animations: {
+            self.username.center.x += self.view.bounds.width
+        
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.4, options: [.curveEaseInOut], animations: {
+            self.pass.center.x += self.view.bounds.width
+        
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 2.0, delay: 0.5, usingSpringWithDamping: 0.1, initialSpringVelocity: 0.0, options: [.curveEaseInOut], animations: {
+            self.loginBtn.center.y -= 30
+            self.loginBtn.alpha = 1.0
+        
+        }, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        spinner.frame = CGRect(x: -20.0, y: 6.0, width: 10.0, height: 10.0)
+        spinner.startAnimating()
+        spinner.alpha = 0.0
+        loginBtn.addSubview(spinner)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func showTip(){
+        UIView.transition(with: tip, duration: 0.33, options: [.curveEaseOut,.transitionFlipFromTop], animations: {
+            self.tip.isHidden = false
+            
+        }, completion: nil)
     }
-
-
+    
+    @IBAction func login(){
+        UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.0, options: [], animations: {
+            self.spinner.center = CGPoint(x: 40.0, y: self.loginBtn.frame.size.height/2)
+            self.spinner.alpha = 1.0
+            self.loginBtn.setTitle("Carregando...", for: .normal)
+            self.loginBtn.backgroundColor = UIColor(red: 0.85, green: 0.83, blue: 0.45, alpha: 1.0)
+            self.loginBtn.center.y += 50.0
+            self.loginBtn.bounds.size.width = self.pass.bounds.size.width
+        
+        }, completion: {_ in
+            self.showTip()
+        })
+    
+    }
 }
 
