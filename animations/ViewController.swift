@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     var tipPosition = CGPoint.zero
     
+    //MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -43,7 +44,7 @@ class ViewController: UIViewController {
         
         UIView.animate(withDuration: 0.5) {
             self.heading.center.x += self.view.bounds.width
-        
+    
         }
         
         UIView.animate(withDuration: 0.5, delay: 0.3, options: [.curveEaseInOut], animations: {
@@ -73,6 +74,7 @@ class ViewController: UIViewController {
         
     }
     
+    //MARK: Actions
     @IBAction func login(){
         UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.0, options: [], animations: {
             self.spinner.center = CGPoint(x: 40.0, y: self.loginBtn.frame.size.height/2)
@@ -87,6 +89,7 @@ class ViewController: UIViewController {
         })
     }
     
+    //MARK: Functions
     func removeTip(){
         UIView.animate(withDuration: 0.33, delay: 0.0, options: [], animations: {
             self.tip.center.x += self.view.frame.size.width
@@ -103,7 +106,11 @@ class ViewController: UIViewController {
             self.loginBtn.setTitle("Sucesso", for: .normal)
             self.loginBtn.backgroundColor = UIColor.brown
             self.spinner.alpha = 0.0
-        }, completion: nil)
+        }, completion: {_ in
+            delay(0.5, completion: {
+                self.performSegue(withIdentifier: "vc", sender: nil)
+            })
+        })
     }
     
     func showTip(){
