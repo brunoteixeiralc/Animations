@@ -23,7 +23,7 @@ class ViewController2: UIViewController {
     
     @IBAction func actionToggleMenu(){
         
-       isMenuOpen = !isMenuOpen
+        isMenuOpen = !isMenuOpen
         
         menuHeightConstraint.constant = isMenuOpen ? 200.0 : 60.0
         
@@ -32,6 +32,22 @@ class ViewController2: UIViewController {
             if constraint.firstItem === headerTitle &&
                 constraint.firstAttribute == .centerX{
                 constraint.constant = isMenuOpen ? -100.0 : 0.0
+                return
+            }
+            
+            if constraint.identifier == "TitleCenterY" {
+                constraint.isActive = false
+                
+                let newConstraint = NSLayoutConstraint(
+                    item: headerTitle,
+                    attribute: .centerY,
+                    relatedBy: .equal,
+                    toItem: headerTitle.superview!,
+                    attribute: .centerY,
+                    multiplier: isMenuOpen ? 0.37 : 1.0,
+                    constant: 5.0)
+                newConstraint.identifier = "TitleCenterY"
+                newConstraint.isActive = true
                 return
             }
         })
