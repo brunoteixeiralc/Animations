@@ -15,6 +15,7 @@ class ViewController2: UIViewController {
     @IBOutlet weak var headerTitle: UILabel!
     
     var isMenuOpen:Bool!
+    var slider: HorizontalItemList!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +45,7 @@ class ViewController2: UIViewController {
                     relatedBy: .equal,
                     toItem: headerTitle.superview!,
                     attribute: .centerY,
-                    multiplier: isMenuOpen ? 0.37 : 1.0,
+                    multiplier: isMenuOpen ? 0.67 : 1.0,
                     constant: 5.0)
                 newConstraint.identifier = "TitleCenterY"
                 newConstraint.isActive = true
@@ -58,5 +59,12 @@ class ViewController2: UIViewController {
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 10.0, options: [.curveEaseIn], animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+        
+        if isMenuOpen{
+            slider = HorizontalItemList(inView: view)
+            self.headerTitle.superview!.addSubview(slider)
+        }else{
+            slider.removeFromSuperview()
+        }
     }
 }
